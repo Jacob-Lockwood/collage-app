@@ -1,3 +1,3 @@
 demo:
 
-![demo video showing usage of the program](./readme-assets/dots_demo.mov)
+![demo video showing usage of the program](https://raw.githubusercontent.com/Jacob-Lockwood/collage-app/main/readme-assets/dots_demo.mov)
