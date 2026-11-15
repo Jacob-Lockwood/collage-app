@@ -1,3 +1,4 @@
 demo:
 
-![](https://raw.githubusercontent.com/Jacob-Lockwood/collage-app/main/readme-assets/dots_demo.mp4)
+https://github.com/user-attachments/assets/4acbd80e-8963-4442-a0cc-c050c981021a
+
