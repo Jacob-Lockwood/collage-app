@@ -5,4 +5,5 @@
 {
   "format_on_save": "on",
   "formatter": "prettier",
+  "auto_indent": "syntax_aware",
 }
