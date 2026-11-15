@@ -1,4 +1,4 @@
-import { data, fromJSON, serialize } from "./serialize";
+import { data, serialize } from "./serialize";
 
 export type Point = { x: number; y: number };
 
@@ -22,8 +22,9 @@ export abstract class CanvasNode implements Render {
 export class Canvas {
   element: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
+  @data title: string = "Untitled canvas";
   @data cameraCenter: Point = { x: 0, y: 0 };
-  @data zoomFactor: number = Math.log(60);
+  @data zoomFactor: number = Math.log(60 * devicePixelRatio ** 2);
   @data nodes: CanvasNode[] = [];
   effects: Render[];
 
@@ -38,13 +39,15 @@ export class Canvas {
     return this.element.width;
   }
   set width(w) {
-    this.element.width = w;
+    this.element.width = w * devicePixelRatio;
+    this.element.style.width = `${w}px`;
   }
   get height() {
     return this.element.height;
   }
   set height(h) {
-    this.element.height = h;
+    this.element.height = h * devicePixelRatio;
+    this.element.style.height = `${h}px`;
   }
 
   registerNode(node: CanvasNode) {
@@ -55,18 +58,18 @@ export class Canvas {
   }
 
   render() {
-    this.width = this.element.clientWidth;
-    this.height = this.element.clientHeight;
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
     this.ctx.clearRect(0, 0, this.width, this.height);
     for (const effect of this.effects) effect.render(this, {});
     for (const node of this.nodes) node.render(this, {});
   }
 
   screenScale(worldLen: number) {
-    return Math.exp(this.zoomFactor) * worldLen;
+    return Math.exp(this.zoomFactor) * (worldLen / devicePixelRatio);
   }
   worldScale(screenLen: number) {
-    return screenLen / Math.exp(this.zoomFactor);
+    return (screenLen * devicePixelRatio) / Math.exp(this.zoomFactor);
   }
   screenX(xWorld: number) {
     return this.screenScale(xWorld - this.cameraCenter.x) + this.width / 2;
@@ -75,10 +78,16 @@ export class Canvas {
     return this.screenScale(yWorld - this.cameraCenter.y) + this.height / 2;
   }
   worldX(xScreen: number) {
-    return this.worldScale(xScreen - this.width / 2) + this.cameraCenter.x;
+    return (
+      this.worldScale(xScreen * devicePixelRatio - this.width / 2) +
+      this.cameraCenter.x
+    );
   }
   worldY(yScreen: number) {
-    return this.worldScale(yScreen - this.height / 2) + this.cameraCenter.y;
+    return (
+      this.worldScale(yScreen * devicePixelRatio - this.height / 2) +
+      this.cameraCenter.y
+    );
   }
   world(screenPoint: Point): Point {
     return { x: this.worldX(screenPoint.x), y: this.worldY(screenPoint.y) };

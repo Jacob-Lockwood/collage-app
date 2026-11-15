@@ -2,10 +2,10 @@ const constructorFieldMap = new Map<Function, Set<string>>();
 let fields = new Set<string>();
 
 /** mark a class as serializable */
-export function serialize<T extends Function>(
-  Target: T,
-  _context: ClassDecoratorContext,
-) {
+export function serialize(Target: Function, _context: ClassDecoratorContext) {
+  const SuperClass = Object.getPrototypeOf(Target);
+  for (const field of constructorFieldMap.get(SuperClass) ?? [])
+    fields.add(field);
   constructorFieldMap.set(Target, fields);
   fields = new Set();
 }
@@ -32,7 +32,7 @@ export function toJSON(value: unknown) {
   return JSON.stringify(value, (_key, val: unknown) => replacer(val));
 }
 /** json decode, restoring serializable classes */
-export function fromJSON(json: string) {
+export function fromJSON<T = unknown>(json: string): T {
   return JSON.parse(json, (_key, value: unknown) => {
     if (typeof value !== "object" || value == null || !("_class" in value))
       return value;

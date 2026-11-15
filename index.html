@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=download,upload,arrow_selector_tool,circle,edit,delete"
+    />
     <title>hackday-art-app</title>
   </head>
   <body>
@@ -11,12 +15,62 @@
       <div id="ring"></div>
       <canvas id="canvas"></canvas>
     </div>
-    <div id="help">
-      <button>?</button>
-      <p class="tooltip">dblclick: add/remove dot; shift: snap</p>
+    <div id="controls">
+      <div id="top-bar">
+        <div id="canvas-title">
+          <input disabled />
+          <button>
+            <span class="material-symbols-outlined">edit</span>
+          </button>
+        </div>
+      </div>
+      <div id="bottom-bar">
+        <div id="save" class="btn">
+          <button>
+            <span class="material-symbols-outlined">download</span>
+          </button>
+          <p class="tooltip above right">download the canvas as JSON</p>
+          <a id="download" class="hidden"></a>
+        </div>
+        <div id="load" class="btn">
+          <button>
+            <span class="material-symbols-outlined">upload</span>
+          </button>
+          <p class="tooltip above right">upload a canvas JSON file</p>
+          <input id="upload" type="file" class="hidden" />
+        </div>
+        <div id="clear" class="btn">
+          <button>
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+          <p class="tooltip above right">start clean with a blank canvas</p>
+        </div>
+        <div id="help" class="btn">
+          <button>?</button>
+          <p class="tooltip above left">
+            dblclick: add/remove dot; shift: snap
+          </p>
+        </div>
+      </div>
+      <div id="sidebar">
+        <div id="select" class="btn">
+          <button>
+            <span class="material-symbols-outlined">arrow_selector_tool</span>
+          </button>
+          <p class="tooltip right">select</p>
+        </div>
+        <div id="move" class="btn">
+          <button>
+            <span class="material-symbols-outlined">circle</span>
+          </button>
+          <p class="tooltip right">circle</p>
+        </div>
+      </div>
     </div>
     <p id="debug"></p>
-    <p id="tooltip" class="tooltip"></p>
+    <div id="tooltip-holder">
+      <p id="tooltip" class="tooltip above right"></p>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

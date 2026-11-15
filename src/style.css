@@ -14,7 +14,9 @@ body {
 }
 
 .tooltip {
-  position: fixed;
+  position: absolute;
+  top: -30%;
+  width: max-content;
   background: black;
   color: white;
   border-radius: 5rem;
@@ -25,42 +27,119 @@ body {
 .tooltip.show {
   opacity: 100%;
 }
-
-#tooltip {
-  top: calc(var(--y) - 3rem);
-  left: calc(var(--x) + 1rem);
+.tooltip.below {
+  top: 3rem;
+}
+.tooltip.above {
+  top: -3rem;
+}
+.tooltip.left {
+  right: calc(100% + 1rem);
+}
+.tooltip.right {
+  left: calc(100% + 1rem);
 }
 
-#help button {
+#tooltip-holder {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  top: var(--mouse-y);
+  left: var(--mouse-x);
+}
+
+.hidden {
+  display: none;
+}
+
+#controls .btn {
+  position: relative;
+}
+#controls button {
   background: black;
   color: grey;
   font-weight: bold;
-  border-radius: 100%;
-  padding: 0.5rem;
   text-align: center;
+  line-height: 0;
+  width: 2.2rem;
+  height: 2.2rem;
   border: none;
-  width: 2rem;
-  height: 2rem;
+  border-radius: 100%;
   transition: color 300ms;
 }
-#help button:hover {
+#controls button:hover {
   color: white;
 }
-#help .tooltip {
-  bottom: 3rem;
-  right: 4rem;
-  width: max-content;
-}
-#help button:hover + .tooltip {
+#controls .btn button:hover + .tooltip {
   opacity: 100%;
+}
+#controls span {
+  font-size: 20px;
+}
+#controls {
+  user-select: none;
+}
+
+#top-bar {
+  position: fixed;
+  top: 2rem;
+  width: 100%;
+  display: flex;
+  padding: 0 2rem;
+  gap: 2rem;
+  justify-content: center;
+}
+#canvas-title {
+  display: flex;
+  gap: 0.5rem;
+  color: hsl(0 0% 70%);
+}
+#canvas-title:has(:focus) {
+  color: white;
+}
+#canvas-title input {
+  display: block;
+  background: black;
+  color: inherit;
+  border-radius: 5rem;
+  width: 30ch;
+  margin: 0 auto;
+  padding: 0.25rem 1rem;
+  text-align: center;
+  border: none;
+  line-height: 0;
+  font-size: 1rem;
+}
+#canvas-title button {
+  cursor: pointer;
+}
+
+#bottom-bar {
+  z-index: 1;
+  position: fixed;
+  bottom: 2rem;
+  width: 100%;
+  display: flex;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+#help {
+  margin-left: auto;
+}
+
+#sidebar {
+  position: fixed;
+  left: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 }
 
 #debug {
   position: fixed;
   inset: 2rem;
-  color: white;
+  color: hsl(200 100% 80%);
+  line-height: 1;
+  opacity: 50%;
   pointer-events: none;
 }
