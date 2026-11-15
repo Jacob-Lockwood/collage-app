@@ -1,17 +1,15 @@
 import "./style.css";
 import { Canvas, Circle, type Point } from "./canvas";
-import { toJSON } from "./serialize";
-
-const canvas = new Canvas(document.querySelector<HTMLCanvasElement>("canvas")!);
+import { fromJSON, toJSON } from "./serialize";
 
 const initialState = localStorage.getItem("canvas-state");
-if (initialState) {
-  canvas.parse(initialState);
-}
-
-canvas.registerEffect(() => {
+const canvas = initialState ? fromJSON(initialState) : new Canvas();
+canvas.init(document.querySelector<HTMLCanvasElement>("canvas")!);
+const save = () => {
   localStorage.setItem("canvas-state", toJSON(canvas));
-});
+};
+setInterval(save, 1000);
+window.addEventListener("beforeunload", save);
 
 canvas.registerEffect(() => {
   canvas.ctx.fillStyle = "hsl(246 11.9% 12.2%)";

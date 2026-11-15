@@ -20,14 +20,20 @@ export abstract class CanvasNode implements Render {
 
 @serialize
 export class Canvas {
-  readonly element: HTMLCanvasElement;
-  readonly ctx: CanvasRenderingContext2D;
+  element: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
   @data cameraCenter: Point = { x: 0, y: 0 };
   @data zoomFactor: number = Math.log(60);
-  constructor(element: HTMLCanvasElement) {
+  @data nodes: CanvasNode[] = [];
+  effects: Render[];
+
+  init(element: HTMLCanvasElement) {
     this.element = element;
     this.ctx = element.getContext("2d")!;
+    this.effects ||= [];
+    this.nodes ||= [];
   }
+
   get width() {
     return this.element.width;
   }
@@ -41,8 +47,6 @@ export class Canvas {
     this.element.height = h;
   }
 
-  effects: Render[] = [];
-  @data nodes: CanvasNode[] = [];
   registerNode(node: CanvasNode) {
     this.nodes.push(node);
   }
@@ -81,10 +85,6 @@ export class Canvas {
   }
   screen(worldPoint: Point): Point {
     return { x: this.screenX(worldPoint.x), y: this.screenY(worldPoint.y) };
-  }
-
-  parse(json: string) {
-    Object.assign(this, fromJSON(json));
   }
 }
 

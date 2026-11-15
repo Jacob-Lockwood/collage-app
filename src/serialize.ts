@@ -16,7 +16,6 @@ export function data(_target: unknown, context: ClassFieldDecoratorContext) {
 
 /** json encode, preserving serializable classes */
 export function toJSON(value: unknown) {
-  console.log("stringify", value + "");
   const replacer = (value: unknown) => {
     if (
       typeof value !== "object" ||
@@ -34,7 +33,6 @@ export function toJSON(value: unknown) {
 }
 /** json decode, restoring serializable classes */
 export function fromJSON(json: string) {
-  console.log("parse", json);
   return JSON.parse(json, (_key, value: unknown) => {
     if (typeof value !== "object" || value == null || !("_class" in value))
       return value;
