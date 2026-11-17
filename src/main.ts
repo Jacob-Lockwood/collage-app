@@ -109,7 +109,13 @@ document.addEventListener(
   (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
-    canvas.zoomFactor += ev.deltaY / 1000;
+    const mouse = canvas.world({ x: ev.clientX, y: ev.clientY });
+    const zoomDelta = ev.deltaY / 1000;
+    canvas.cameraCenter = {
+      x: mouse.x - (mouse.x - canvas.cameraCenter.x) / Math.exp(zoomDelta),
+      y: mouse.y - (mouse.y - canvas.cameraCenter.y) / Math.exp(zoomDelta),
+    };
+    canvas.zoomFactor += zoomDelta;
     canvas.render();
   },
   { passive: false },
